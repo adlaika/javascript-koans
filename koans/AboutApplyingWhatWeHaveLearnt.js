@@ -45,7 +45,7 @@ describe("About Applying What We Have Learnt", function() {
 
       var hasNoMushrooms = function(prod) {
         var ings = prod['ingredients'];
-        return !(ings.some(isMushrooms));
+        return !(_.any(ings, isMushrooms));
       };
 
       productsWithNoMushrooms = products.filter(hasNoMushrooms)
@@ -89,15 +89,31 @@ describe("About Applying What We Have Learnt", function() {
         }
     }
 
-    expect(ingredientCount['mushrooms']).toBe(FILL_ME_IN);
+    expect(ingredientCount['mushrooms']).toBe(2);
   });
 
   it("should count the ingredient occurrence (functional)", function () {
     var ingredientCount = { "{ingredient name}": 0 };
 
     /* chain() together map(), flatten() and reduce() */
+        // var countOccurrences = function(products) {
+        var counts = {};
+        var allIngs = [];
 
-    expect(ingredientCount['mushrooms']).toBe(FILL_ME_IN);
+        var result =
+            _.chain(products)
+            .map(function(prod) {
+                return allIngs.push.apply(allIngs, prod.ingredients);
+            })
+            .value();
+
+        var ingredientCount =
+            _.reduce(allIngs, function(counts, word) {
+              counts[word] = (counts[word] || 0) + 1;
+              return counts;
+            }, {})
+
+        expect(ingredientCount['mushrooms']).toBe(2);
   });
 
   /*********************************************************************************/
